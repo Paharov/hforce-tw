@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3'
+import { getFoci, getCurrencyMap } from './helper/foci.js'; 
 
 class Force extends Component {
     constructor(props) {
@@ -20,7 +21,7 @@ class Force extends Component {
 
     createBalls = () => {
         var width = 960,
-            height = 500;
+            height = 1000;
 
         var nodes = [],
             foci = [{ x: 150, y: 150 }, { x: 350, y: 250 }, { x: 700, y: 400 }];
@@ -67,6 +68,14 @@ class Force extends Component {
         let src = this.state.current ? this.state.current.src_currency : "no";
         let dest = this.state.current ? this.state.current.tgt_currency : "no";
 
+        console.log(src);
+        console.log(dest);
+        console.log(this.state.current);
+        let currMap = getCurrencyMap(this.state.currencies);
+        console.log(currMap);
+        let coords = currMap[src];
+        console.log(coords)
+
         var node = this.state.svg.selectAll("circle");
 
         this.state.nodes.push({ id: ~~(Math.random() * this.state.foci.length) });
@@ -76,8 +85,8 @@ class Force extends Component {
                 
         node.enter().append("circle")
             .attr("class", "node")
-            .attr("cx", function (d) { return d.x; })
-            .attr("cy", function (d) { return d.y; })
+            .attr("cx", function (d) { return coords.x; })
+            .attr("cy", function (d) { return coords.y; })
             .attr("r", 8)
             .style("fill", "red")
             .call(this.state.force.drag);
@@ -89,12 +98,14 @@ class Force extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.newBall();
         this.setState({
             currencies: nextProps.currencies,
             countries: nextProps.countries,
             current: nextProps.current
         })
+        if (this.state.current) {
+            this.newBall();
+        }
     }
 
     render() {
