@@ -14,7 +14,7 @@ const styles = {
     title: {
         marginLeft: "auto", 
         fontFamily: "Ubuntu", 
-        marginRight: "35%", 
+        marginRight: "38%", 
         fontSize: "1.5rem",
         letterSpacing: "0.05em"
     }
@@ -23,7 +23,7 @@ const styles = {
 function NavBar(props) {
     const { classes } = props;
     return(
-        <AppBar style={{viewportWidth: "100%", backgroundColor: "#37517e"}}>
+        <AppBar style={{viewportWidth: "100%"}}>
             <Toolbar>
                 <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"/>
                 {<img width="13%" height="13%" src={logo} style={styles.logo}/>}

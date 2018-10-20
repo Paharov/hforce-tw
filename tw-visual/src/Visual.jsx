@@ -10,7 +10,7 @@ const styles = theme => ({
     root: {
         ...theme.mixins.gutters(),
         paddingTop: theme.spacing.unit * 5,
-        paddingBottom: theme.spacing.unit * 5,
+        paddingBottom: theme.spacing.unit * 5
     },
     force: {
         position: "relative",
