@@ -43,6 +43,8 @@ class Force extends Component {
         var force = d3.layout.force()
             .nodes(nodes)
             .links([])
+            .friction(0.3)
+           // .charge(0)
             .gravity(0.005)
             .size([width, height])
             .on("tick", this.doTick);
