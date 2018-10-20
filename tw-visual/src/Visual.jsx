@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { SizeMe } from 'react-sizeme'
 
-
 const styles = theme => ({
     root: {
         ...theme.mixins.gutters(),
