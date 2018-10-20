@@ -25,8 +25,8 @@ class Visual extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            streamGen: testStream(),
-            currencies: currencies(),
+            streamGen: testStream(15),
+            currencies: currencies(15),
             countries: countries(),
             current: null,
             interval: 600

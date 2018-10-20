@@ -2,12 +2,17 @@ import testTransfers from './sample_data/transfers.json'
 import recipients from './sample_data/recipient.json'
 import senders from './sample_data/profile-service.json'
 
-function* testStream() {
+function* testStream(numTop) {
     const recipientsById = getRecipientsById();
     const sendersById = getSendersById();
+    const topCurrencies = currencies(numTop)
     while (true) {
         for (var element in testTransfers) {
             var transfer = testTransfers[element];
+            if (topCurrencies.indexOf(transfer.src_currency) == -1 || 
+                topCurrencies.indexOf(transfer.tgt_currency) == -1) {
+                    continue;
+            }
             var result = {
                 ...transfer,
                 recipient: recipientsById[transfer.recipient_id],
@@ -18,17 +23,17 @@ function* testStream() {
     }
 }
 
-function currencies() {
+function currencies(numTop) {
     var seen = {};
     let sourceCurrencies = testTransfers
         .map(transfer => transfer.src_currency)
         .filter(item =>
-            (seen.hasOwnProperty(item) ? false : (seen[item] = true)));
+            (seen.hasOwnProperty(item) ? seen[item] = seen[item]++ : (seen[item] = 1)));
     let targetCurrencies = testTransfers
             .map(transfer => transfer.tgt_currency)
             .filter(item =>
-                (seen.hasOwnProperty(item) ? false : (seen[item] = true)));
-    return sourceCurrencies.concat(targetCurrencies);
+                (seen.hasOwnProperty(item) ? seen[item]++ : (seen[item] = 1)));
+    return Object.keys(seen).sort( (a, b) => seen[b] - seen[a]).slice(0, numTop);
 }
 
 function countries() {
