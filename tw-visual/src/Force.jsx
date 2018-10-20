@@ -2,6 +2,17 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import { getFoci, getCurrencyMap } from './helper/foci.js';
 import { getRatesMap, calculateCircleSize } from './helper/converter.js';
+import logo from './resources/transferwise_small_logo.png';
+import USD from './images/usd.jpg';
+import CNY from './images/cny.jpg';
+import EUR from './images/eur.jpg';
+import UAH from './images/uah.svg';
+import PHP from './images/php.gif';
+import BRL from './images/brl.png';
+import RUB from './images/rub.svg';
+import IDR from './images/idr.jpg';
+import PLN from './images/pln.jpg';
+import SEK from './images/sek.svg';
 
 class Force extends Component {
     constructor(props) {
@@ -19,7 +30,8 @@ class Force extends Component {
             rates: null,
             height: props.height,
             width: props.width,
-            currencyMap: getCurrencyMap(props.currencies, props.width / 2, (props.height / 2) + props.height * 0.2, Math.min(props.width, props.height) / 2.2)
+            currencyMap: getCurrencyMap(props.currencies, props.width / 2, (props.height / 2) + props.height * 0.2, Math.min(props.width, props.height) / 2.2),
+            images: { "BRL": BRL, "CNY": CNY, "EUR": EUR, "IDR": IDR, "PHP": PHP, "PLN": PLN, "RUB": RUB, "SEK": SEK, "UAH": UAH, "USD": USD }
         }
         this.createBalls = this.createBalls.bind(this);
         this.newBall = this.newBall.bind(this);
@@ -44,7 +56,7 @@ class Force extends Component {
             .nodes(nodes)
             .links([])
             .friction(0.1)
-            .charge(-30)
+            .charge(-400)
             .gravity(0.005)
             .size([width, height])
             .on("tick", this.doTick);
@@ -78,7 +90,7 @@ class Force extends Component {
     }
 
     doTick = (e) => {
-        var k = 0.01;
+        var k = 0.05;
 
         // Push nodes toward their designated focus.
         let node = this.state.currNode;
@@ -136,6 +148,7 @@ class Force extends Component {
             .append("title")
             .text(this.state.current.src_currency + " => " + this.state.current.tgt_currency)
             .call(this.state.force.drag());
+
         this.scheduleTargetChange(circleSelection[0], circleSelection[0].length);
         this.scheduleBallExecution(circleSelection);
         this.setState({
