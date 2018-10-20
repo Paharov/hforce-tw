@@ -1,25 +1,19 @@
 import React from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
 import logo from './resources/Transferwise_logo.png'
 import { withStyles } from '@material-ui/core/styles';
-import Icon from '@material-ui/core/Icon';
 
 const styles = {
     logo: {
-      marginLeft: -12,
+      marginLeft: 10,
       marginRight: 20,
-      marginBottom: 12
-    },
-    card: {
-        size: "20%",
-        marginLeft: "90%"
+      marginBottom: 10
     },
     title: {
         marginLeft: "auto", 
         fontFamily: "Ubuntu", 
-        marginRight: "40%", 
+        marginRight: "38%", 
         fontSize: "1.5rem",
         letterSpacing: "0.05em"
     }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import { getFoci, getCurrencyMap } from './helper/foci.js';
 import { getRatesMap, calculateCircleSize } from './helper/converter.js';
+import logo from './resources/transferwise_small_logo.png' 
 
 class Force extends Component {
     constructor(props) {
@@ -50,13 +51,15 @@ class Force extends Component {
 
         Object.keys(currMap).forEach(
             key => {
-                d3.select("#mainSvg")
-                    .append("text")
-                    .attr("class", "labelElement")
-                    .attr("x", currMap[key].labelX)
-                    .attr("y", currMap[key].labelY)
-                    .style("font-size", "0.5em")
-                    .text(key)
+                
+                var divNode = document.createElement("DIV");
+                var textNode = document.createTextNode(key);
+                divNode.appendChild(textNode);
+                divNode.style = "opacity: 0.65; border-radius: 3px; padding: 6px; background-color: " + currMap[key].color
+                    + "; font-size: 1.1em; font-family: Ubunut; position: absolute; left: " + currMap[key].labelX
+                    + "px; top: " + currMap[key].labelY + "px";
+                textNode.style = "opacity: 1.0 important!;"
+                document.getElementById("root").appendChild(divNode);
             });
 
         force.start();
@@ -141,6 +144,15 @@ class Force extends Component {
         })
         if (this.state.current !== null) {
             this.newBall();
+        }
+    }
+
+    styles = {
+        logo: {
+            size: "20px",
+            marginLeft: 10,
+            marginRight: 20,
+            marginBottom: 10
         }
     }
 
