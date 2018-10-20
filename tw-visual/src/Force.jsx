@@ -80,8 +80,8 @@ class Force extends Component {
         let currencyMap = this.state.currencyMap;
 
         this.state.nodes.forEach(function (o, i) {
-            o.y += (currencyMap[o.id].y - o.y) * k;
-            o.x += (currencyMap[o.id].x - o.x) * k;
+            o.y += (currencyMap[o.id[1]].y - o.y) * k;
+            o.x += (currencyMap[o.id[1]].x - o.x) * k;
         });
 
         node
@@ -95,15 +95,23 @@ class Force extends Component {
         }, this.state.interval * 50)
     }
 
+    scheduleTargetChange = (ball, n) => {
+        setTimeout(function() {
+            console.log(ball, n)
+            var temp = ball[n-1].__data__.id[0]
+            ball[n-1].__data__.id[0] = ball[n-1].__data__.id[1]
+            ball[n-1].__data__.id[1] = temp
+            ball[n-1].style.visibility = "visible"
+        }, this.state.interval * 5)
+    }
+
     newBall = () => {     
 
-        console.log(this.state.rates)
-        
-        console.log(this.state.current)
         const srcCoords = this.state.currencyMap[this.state.current.src_currency];
-        console.log(srcCoords);
 
-        this.state.nodes.push({ id: this.state.current.tgt_currency });
+
+        this.state.nodes.push({ id: [this.state.current.tgt_currency, this.state.current.src_currency] });
+
         this.state.force.start();
 
         const node = this.state.currNode.data(this.state.nodes);
@@ -114,14 +122,16 @@ class Force extends Component {
         let circleSelection = node.enter().insert("circle", ".labelElement");
         circleSelection
             .attr("class", "node")
-            .attr("cx", srcCoords.x )
-            .attr("cy", srcCoords.y )
+            .attr("x", srcCoords.x )
+            .attr("y", srcCoords.y )
             .attr("r", calculateCircleSize(this.state.current.source_amount, 
                                         this.state.rates[this.state.current.src_currency]))
             .style("fill", srcCoords.color)
+            .style("visibility", "hidden")
             .append("title")
             .text(this.state.current.src_currency + " => " + this.state.current.tgt_currency)
             .call(this.state.force.drag());
+        this.scheduleTargetChange(circleSelection[0], circleSelection[0].length);
         this.scheduleBallExecution(circleSelection);
         this.setState({
             currNode: node
