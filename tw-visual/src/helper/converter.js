@@ -16,7 +16,7 @@ export async function getRatesMap(component) {
 }
 
 export function calculateCircleSize(srcAmount, rate) {
-    const usdAmount = rate != 0 ? srcAmount / rate : srcAmount;
+    const usdAmount = rate != 0 ? srcAmount / rate : 2000;
     if (usdAmount > 10000) {
         return 16
     } else if (usdAmount >= 5000) {

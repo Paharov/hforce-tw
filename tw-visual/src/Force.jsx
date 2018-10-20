@@ -62,7 +62,6 @@ class Force extends Component {
         var k = .1 * e.alpha;
 
         // Push nodes toward their designated focus.
-        let foci = this.state.foci;
         let node = this.state.currNode;
         let currencyMap = this.state.currencyMap;
 
@@ -76,16 +75,12 @@ class Force extends Component {
             .attr("cy", function (d) { return d.y; });
     }
 
-    newBall = () => {
-        console.log(this.state.rates)
-        console.log(this.state.currencyMap)
-        console.log(this.state.current);
+    newBall = () => {     
         
+        // console.log(this.state.current)
         
         const srcCoords = this.state.currencyMap[this.state.current.src_currency];
-
         console.log(srcCoords);
-
 
         this.state.nodes.push({ id: this.state.current.tgt_currency });
         this.state.force.start();
@@ -94,8 +89,8 @@ class Force extends Component {
 
         node.enter().append("circle")
             .attr("class", "node")
-            .attr("cx", function (d) { return srcCoords.x; })
-            .attr("cy", function (d) { return srcCoords.y; })
+            .attr("cx", srcCoords.x / 2 )
+            .attr("cy", srcCoords.y / 2 )
             .attr("r", calculateCircleSize(this.state.current.source_amount, 
                                         this.state.rates[this.state.current.src_currency]))
             .style("fill", srcCoords.color)
