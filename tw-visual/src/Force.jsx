@@ -9,7 +9,6 @@ class Force extends Component {
         this.nodeRef = React.createRef();
         this.state = {
             currencies: props.currencies,
-            countries: props.countries,
             current: props.current,
             interval: props.interval,
             nodes: null,

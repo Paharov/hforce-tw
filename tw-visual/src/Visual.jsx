@@ -19,17 +19,19 @@ const styles = theme => ({
     }
 });
 
+const interval = 600;
+const numCurrencies = 10;
 
 class Visual extends Component {
 
     constructor(props) {
         super(props);
+        let topCurrencies = currencies(numCurrencies);
         this.state = {
-            streamGen: testStream(15),
-            currencies: currencies(15),
-            countries: countries(),
+            streamGen: testStream(topCurrencies),
+            currencies: topCurrencies,
             current: null,
-            interval: 600
+            interval: interval
         }
     }
 

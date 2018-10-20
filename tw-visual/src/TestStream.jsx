@@ -2,15 +2,14 @@ import testTransfers from './sample_data/transfers.json'
 import recipients from './sample_data/recipient.json'
 import senders from './sample_data/profile-service.json'
 
-function* testStream(numTop) {
+function* testStream(currencies) {
     const recipientsById = getRecipientsById();
     const sendersById = getSendersById();
-    const topCurrencies = currencies(numTop)
     while (true) {
         for (var element in testTransfers) {
             var transfer = testTransfers[element];
-            if (topCurrencies.indexOf(transfer.src_currency) == -1 || 
-                topCurrencies.indexOf(transfer.tgt_currency) == -1) {
+            if (currencies.indexOf(transfer.src_currency) == -1 || 
+                currencies.indexOf(transfer.tgt_currency) == -1) {
                     continue;
             }
             var result = {
