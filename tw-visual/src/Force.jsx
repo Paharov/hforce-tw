@@ -6,13 +6,14 @@ import logo from './resources/transferwise_small_logo.png';
 import USD from './images/usd.jpg';
 import CNY from './images/cny.jpg';
 import EUR from './images/eur.jpg';
-import UAH from './images/uah.svg';
+import UAH from './images/uah.jpg';
 import PHP from './images/php.gif';
 import BRL from './images/brl.png';
-import RUB from './images/rub.svg';
+import RUB from './images/rub.jpg';
 import IDR from './images/idr.jpg';
 import PLN from './images/pln.jpg';
-import SEK from './images/sek.svg';
+import SEK from './images/sek.jpg';
+import TW from './images/tw.png';
 
 class Force extends Component {
     constructor(props) {
@@ -62,6 +63,15 @@ class Force extends Component {
                 .append("svg:feImage")
                 .attr("xlink:href", this.state.images[currency]);
         })
+
+        svg.append("svg:filter")
+            .attr("id", `TW_sign`)
+            .attr("x", "0%")
+            .attr("y", "0%")
+            .attr("width", "100%")
+            .attr("height", "100%")
+            .append("svg:feImage")
+            .attr("xlink:href", TW);
 
         var force = d3.layout.force()
             .nodes(nodes)
@@ -123,12 +133,27 @@ class Force extends Component {
 
     scheduleTargetChange = (ball, n) => {
         setTimeout(function() {
-            console.log(ball, n)
             var temp = ball[n-1].__data__.id[0]
             ball[n-1].__data__.id[0] = ball[n-1].__data__.id[1]
             ball[n-1].__data__.id[1] = temp
             ball[n-1].style.visibility = "visible"
         }, this.state.interval * 5)
+    }
+
+    scheduleLogoTransition = (ball, n) => {
+        setTimeout(function() {
+            ball[n-1].attributes.filter.value = `url(#TW_sign)`
+            ball[n-1].attributes.filter.nodeValue = `url(#TW_sign)`
+            ball[n-1].attributes.filter.textContent = `url(#TW_sign)`
+        }, this.state.interval * 6.5)
+    }
+
+    scheduleSymbolChange = (ball, n) => {
+        setTimeout(function() {
+            ball[n-1].attributes.filter.value = `url(#${ball[n-1].__data__.id[1]}_sign)`
+            ball[n-1].attributes.filter.nodeValue = `url(#${ball[n-1].__data__.id[1]}_sign)`
+            ball[n-1].attributes.filter.textContent = `url(#${ball[n-1].__data__.id[1]}_sign)`
+        }, this.state.interval * 8)
     }
 
     newBall = () => {     
@@ -160,6 +185,8 @@ class Force extends Component {
             .call(this.state.force.drag());
 
         this.scheduleTargetChange(circleSelection[0], circleSelection[0].length);
+        this.scheduleLogoTransition(circleSelection[0], circleSelection[0].length);
+        this.scheduleSymbolChange(circleSelection[0], circleSelection[0].length);
         this.scheduleBallExecution(circleSelection);
         this.setState({
             currNode: node
