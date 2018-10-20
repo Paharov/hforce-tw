@@ -66,7 +66,6 @@ class Force extends Component {
         }, 500);
     }
 
-
     componentDidMount() {
         this.createBalls();
     }
@@ -81,7 +80,7 @@ class Force extends Component {
 
     render() {
         return (
-            <svg width={this.props.width} height={this.props.height} ref={node => this.node = node}></svg>
+            <svg width="100%" height="100%" ref={node => this.node = node}></svg>
         );
     }
 }

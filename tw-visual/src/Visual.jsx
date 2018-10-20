@@ -1,6 +1,21 @@
 import {testStream, currencies, countries} from './TestStream'
 import React, { Component } from 'react';
 import Force from './Force'
+import NavBar from './NavBar'
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+
+const styles = theme => ({
+    root: {
+      ...theme.mixins.gutters(),
+      paddingTop: theme.spacing.unit * 5,
+      paddingBottom: theme.spacing.unit * 5,
+    },
+});
+  
+
 class Visual extends Component {
 
     constructor(props) {
@@ -28,13 +43,21 @@ class Visual extends Component {
     }
 
     render() {
+        const { classes } = this.props;
         return (
             <React.Fragment>
-                <h1>{this.state.current ? this.state.current.recipient.first_name : ""}</h1>
-                <Force {...this.state} width={500} height={500}/>
+                <NavBar/>
+                <Paper className={classes.root} elevation={1}>
+                    <Force {...this.state}/>
+                    {/* {"Visual goes here"} */}
+                </Paper>
             </React.Fragment>
         );
     }
 }
 
-export default Visual;
+Visual.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+  
+export default withStyles(styles)(Visual);
