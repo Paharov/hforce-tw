@@ -12,7 +12,7 @@
     "typeface-roboto": "0.0.54",
     "axios": "^0.18.0",
     "react-sizeme": "^2.5.2"
-    },
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
