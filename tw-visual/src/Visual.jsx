@@ -31,7 +31,7 @@ class Visual extends Component {
         return (
             <React.Fragment>
                 <h1>{this.state.current ? this.state.current.recipient.first_name : ""}</h1>
-                <Force {...this.state} width={500} height={500}/>
+                <Force {...this.state} width={100} height={100}/>
             </React.Fragment>
         );
     }
