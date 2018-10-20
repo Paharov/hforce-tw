@@ -5,10 +5,9 @@ class Force extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            streamGen: props.streamGen,
             currencies: props.currencies,
             countries: props.countries,
-            current: null,
+            current: props.current,
             interval: props.interval
         }
         this.createBalls = this.createBalls.bind(this);
@@ -71,6 +70,15 @@ class Force extends Component {
     componentDidMount() {
         this.createBalls();
     }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            currencies: nextProps.currencies,
+            countries: nextProps.countries,
+            current: nextProps.current
+        })
+    }
+
     render() {
         return (
             <svg width={this.props.width} height={this.props.height} ref={node => this.node = node}></svg>
