@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import * as d3 from 'd3'
+import * as d3 from 'd3';
+import { getFoci } from './helper/foci.js';
 
 class Force extends Component {
     constructor(props) {
@@ -21,7 +22,7 @@ class Force extends Component {
         var fill = d3.scale.category10();
 
         var nodes = [],
-            foci = [{ x: 150, y: 150 }, { x: 350, y: 250 }, { x: 700, y: 400 }];
+            foci = getFoci(this.state.currencies);
 
         var svg = d3.select("body").append("svg")
             .attr("width", width)
