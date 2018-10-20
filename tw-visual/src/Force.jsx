@@ -26,7 +26,7 @@ class Force extends Component {
             height = 1000;
 
         var nodes = [],
-            foci = [{ x: 150, y: 150 }, { x: 350, y: 250 }, { x: 700, y: 400 }];
+            foci = getFoci(this.state.currencies.length);
 
         var svg = d3.select("body").append("svg")
             .attr("width", width)
@@ -73,20 +73,21 @@ class Force extends Component {
 
     newBall = () => {
 
-        let currencyMap = getCurrencyMap(this.state.currencies);
-        let coords = currencyMap[this.state.current.src_currency];
+        const currencyMap = getCurrencyMap(this.state.currencies);
+        const srcCoords = currencyMap[this.state.current.src_currency];
+        const tgtCoords = currencyMap[this.state.current.tgt_currency];
 
         this.state.nodes.push({ id: ~~(Math.random() * this.state.foci.length) });
         this.state.force.start();
 
-        var node = this.state.currNode.data(this.state.nodes);
+        const node = this.state.currNode.data(this.state.nodes);
 
         node.enter().append("circle")
             .attr("class", "node")
-            .attr("cx", function (d) { return coords.x; })
-            .attr("cy", function (d) { return coords.y; })
+            .attr("cx", function (d) { return srcCoords.x; })
+            .attr("cy", function (d) { return srcCoords.y; })
             .attr("r", 8)
-            .style("fill", "red")
+            .style("fill", "#555888")
             .call(this.state.force.drag);
 
         this.setState({
