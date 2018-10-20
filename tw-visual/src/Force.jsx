@@ -51,18 +51,6 @@ class Force extends Component {
             .attr("width", width + width * 0.4)
             .attr("height", height + height * 0.4);
 
-        this.state.currencies.forEach(
-            currency => {
-                svg.append("svg:filter")
-                .attr("id", `${currency}_sign`)
-                .attr("x", "0%")
-                .attr("y", "0%")
-                .attr("width", "100%")
-                .attr("height", "100%")
-                .append("svg:feImage")
-                .attr("xlink:href", this.state.images[currency]);
-        })
-
         var force = d3.layout.force()
             .nodes(nodes)
             .links([])
@@ -152,7 +140,6 @@ class Force extends Component {
             .attr("y", srcCoords.y )
             .attr("r", calculateCircleSize(this.state.current.source_amount, 
                                         this.state.rates[this.state.current.src_currency]))
-            .attr("filter", `url(#${this.state.current.src_currency}_sign)`)
             .style("fill", srcCoords.color)
             .style("visibility", "hidden")
             .append("title")
