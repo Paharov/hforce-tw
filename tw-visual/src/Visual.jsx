@@ -1,4 +1,4 @@
-import {testStream, currencies, countries} from './TestStream'
+import { testStream, currencies, countries } from './TestStream'
 import React, { Component } from 'react';
 import Force from './Force'
 import NavBar from './NavBar'
@@ -6,15 +6,21 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import { SizeMe } from 'react-sizeme'
 
 const styles = theme => ({
     root: {
-      ...theme.mixins.gutters(),
-      paddingTop: theme.spacing.unit * 5,
-      paddingBottom: theme.spacing.unit * 5,
+        ...theme.mixins.gutters(),
+        paddingTop: theme.spacing.unit * 5,
+        paddingBottom: theme.spacing.unit * 5,
     },
+    force: {
+        padding: theme.spacing.unit * 5,
+        position: "relative",
+        "z-index": 100000,
+    }
 });
-  
+
 
 class Visual extends Component {
 
@@ -25,7 +31,7 @@ class Visual extends Component {
             currencies: currencies(),
             countries: countries(),
             current: null,
-            interval: 1000
+            interval: 600
         }
     }
 
@@ -46,11 +52,13 @@ class Visual extends Component {
         const { classes } = this.props;
         return (
             <React.Fragment>
-                <NavBar/>
-                <Paper className={classes.root} elevation={1}>
-                    <Force {...this.state}/>
-                    {/* {"Visual goes here"} */}
-                </Paper>
+                <NavBar />
+                <div className={classes.force}>
+                    <SizeMe>
+                        {({ size }) =>
+                            <Force {...this.state} width={size.width} height={size.height} />}
+                    </SizeMe>
+                </div>
             </React.Fragment>
         );
     }
@@ -59,5 +67,5 @@ class Visual extends Component {
 Visual.propTypes = {
     classes: PropTypes.object.isRequired,
 };
-  
+
 export default withStyles(styles)(Visual);
