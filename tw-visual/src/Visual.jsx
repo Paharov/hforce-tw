@@ -1,6 +1,6 @@
 import testStream from './TestStream'
 import { select } from 'd3-selection'
-import { scaleLinear } from 'd3-scale'
+import { scaleOrdinal } from 'd3-scale'
 import { force } from 'd3-force'
 import * as d3 from 'd3'
 import React, { Component } from 'react';
@@ -25,7 +25,7 @@ class Visual extends Component {
         var width = 960,
             height = 500;
 
-        var fill = scaleLinear().category10();
+        var fill = scaleOrdinal(d3.schemeCategory10);
 
         var nodes = [],
             foci = [{ x: 150, y: 150 }, { x: 800, y: 400 }, { x: 500, y: 400 }];
@@ -34,12 +34,10 @@ class Visual extends Component {
             .attr("width", width)
             .attr("height", height);
 
-        var force = force
+        var forced = d3.forceSimulation()
             .nodes(nodes)
-            .links([])
-            .gravity(0.05)
-            .size([width, height])
-            .on("tick", tick);
+            .tick(tick);
+        
 
         var node = svg.selectAll("circle");
 
@@ -59,7 +57,6 @@ class Visual extends Component {
 
         setInterval(function () {
             nodes.push({ id: ~~(Math.random() * foci.length) });
-            force.start();
 
             node = node.data(nodes);
 
@@ -70,7 +67,7 @@ class Visual extends Component {
                 .attr("r", 8)
                 .style("fill", function (d) { return fill(d.id); })
                 .style("stroke", function (d) { return d3.rgb(fill(d.id)).darker(2); })
-                .call(force.drag);
+                .call(d3.drag)
         }, 500);
     }
 
