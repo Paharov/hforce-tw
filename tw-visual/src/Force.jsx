@@ -73,7 +73,7 @@ class Force extends Component {
     }
 
     doTick = (e) => {
-        var k = .05 * e.alpha;
+        var k = 0.01;
 
         // Push nodes toward their designated focus.
         let node = this.state.currNode;
