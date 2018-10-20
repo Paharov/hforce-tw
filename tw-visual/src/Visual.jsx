@@ -4,9 +4,9 @@ import Force from './Force'
 import NavBar from './NavBar'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import { SizeMe } from 'react-sizeme'
+import logo from './resources/transferwise_small_logo.png' 
+
 
 const styles = theme => ({
     root: {
@@ -53,6 +53,7 @@ class Visual extends Component {
         return (
             <React.Fragment>
                 <NavBar />
+                {<img src={logo} style={{position: "absolute", top: "60%", left: "48%", height: "auto", width: "120px"}}/>}
                 <div className={classes.force}>
                     <SizeMe>
                         {({ size }) => 
