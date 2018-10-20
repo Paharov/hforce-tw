@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import * as d3 from 'd3';
-import { getFoci } from './helper/foci.js';
+import * as d3 from 'd3'
 
 class Force extends Component {
     constructor(props) {
@@ -9,20 +8,22 @@ class Force extends Component {
             currencies: props.currencies,
             countries: props.countries,
             current: props.current,
-            interval: props.interval
+            interval: props.interval,
+            nodes: null,
+            foci: null,
+            force: null,
+            svg: null
         }
-        this.createFoci = this.createFoci.bind(this);
-        this.placeBall = this.placeBall.bind(this);
+        this.createBalls = this.createBalls.bind(this);
+        this.newBall = this.newBall.bind(this);
     }
 
-    createFoci = () => {
+    createBalls = () => {
         var width = 960,
             height = 500;
 
-        var fill = d3.scale.category10();
-
         var nodes = [],
-            foci = getFoci(this.state.currencies);
+            foci = [{ x: 150, y: 150 }, { x: 350, y: 250 }, { x: 700, y: 400 }];
 
         var svg = d3.select("body").append("svg")
             .attr("width", width)
@@ -39,6 +40,13 @@ class Force extends Component {
         
         var node = svg.selectAll("circle");
 
+        this.setState({
+            nodes: nodes,
+            foci: foci,
+            force: force,
+            svg: svg
+        })
+
         function tick(e) {
             var k = .1 * e.alpha;
 
@@ -54,33 +62,39 @@ class Force extends Component {
         }
     }
 
-    placeBall = () => {
-        nodes.push({ id: ~~(Math.random() * foci.length) });
+    newBall = () => {
 
-        node = node.data(nodes);
+        let src = this.state.current ? this.state.current.src_currency : "no";
+        let dest = this.state.current ? this.state.current.tgt_currency : "no";
 
+        var node = this.state.svg.selectAll("circle");
+
+        this.state.nodes.push({ id: ~~(Math.random() * this.state.foci.length) });
+        this.state.force.start();
+
+        node = node.data(this.state.nodes);
+                
         node.enter().append("circle")
             .attr("class", "node")
             .attr("cx", function (d) { return d.x; })
             .attr("cy", function (d) { return d.y; })
             .attr("r", 8)
-            .style("fill", function (d) { return fill(d.id); })
-            .style("stroke", function (d) { return d3.rgb(fill(d.id)).darker(2); })
-            .call(force.drag);
+            .style("fill", "red")
+            .call(this.state.force.drag);
     }
 
 
     componentDidMount() {
-        this.createFoci();
+        this.createBalls();
     }
 
     componentWillReceiveProps(nextProps) {
+        this.newBall();
         this.setState({
             currencies: nextProps.currencies,
             countries: nextProps.countries,
             current: nextProps.current
         })
-        this.createBalls();
     }
 
     render() {
