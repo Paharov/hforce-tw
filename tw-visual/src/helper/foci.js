@@ -4,8 +4,8 @@ export function getFoci(currencies){
     var foci = []
     for (var i = 0; i < n; i++) {
         foci.push({
-            x: center.x + 250 * Math.cos(i),
-            y: center.y + 250 * Math.sin(i)
+            x: center.x + 250 * Math.cos((2*i*Math.PI)/n),
+            y: center.y + 250 * Math.sin((2*i*Math.PI)/n)
         })
     }
     return foci
