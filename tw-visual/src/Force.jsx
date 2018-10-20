@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import { getFoci, getCurrencyMap } from './helper/foci.js';
-import { getRatesMap } from './helper/converter.js';
-import { EventEmitter } from 'events';
+import { getRatesMap, calculateCircleSize } from './helper/converter.js';
 
 class Force extends Component {
     constructor(props) {
@@ -57,8 +56,6 @@ class Force extends Component {
             svg: svg,
             currNode: node
         })
-
-
     }
 
     doTick = (e) => {
@@ -81,8 +78,14 @@ class Force extends Component {
 
     newBall = () => {
         console.log(this.state.rates)
-
+        console.log(this.state.currencyMap)
+        console.log(this.state.current);
+        
+        
         const srcCoords = this.state.currencyMap[this.state.current.src_currency];
+
+        console.log(srcCoords);
+
 
         this.state.nodes.push({ id: this.state.current.tgt_currency });
         this.state.force.start();
@@ -93,7 +96,8 @@ class Force extends Component {
             .attr("class", "node")
             .attr("cx", function (d) { return srcCoords.x; })
             .attr("cy", function (d) { return srcCoords.y; })
-            .attr("r", 8)
+            .attr("r", calculateCircleSize(this.state.current.source_amount, 
+                                        this.state.rates[this.state.current.src_currency]))
             .style("fill", srcCoords.color)
             .append("title")
             .text(this.state.current.src_currency + " => " + this.state.current.tgt_currency)
