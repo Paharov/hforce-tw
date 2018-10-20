@@ -42,7 +42,7 @@ class Force extends Component {
         var force = d3.layout.force()
             .nodes(nodes)
             .links([])
-            .gravity(0)
+            .gravity(0.02)
             .size([width, height])
             .on("tick", this.doTick);
 
@@ -60,7 +60,7 @@ class Force extends Component {
     }
 
     doTick = (e) => {
-        var k = .1 * e.alpha;
+        var k = .05 * e.alpha;
 
         // Push nodes toward their designated focus.
         let node = this.state.currNode;
@@ -78,8 +78,7 @@ class Force extends Component {
 
     newBall = () => {     
         
-        // console.log(this.state.current)
-        
+        console.log(this.state.current)
         const srcCoords = this.state.currencyMap[this.state.current.src_currency];
         console.log(srcCoords);
 
@@ -90,8 +89,8 @@ class Force extends Component {
 
         node.enter().append("circle")
             .attr("class", "node")
-            .attr("cx", srcCoords.x / 2 )
-            .attr("cy", srcCoords.y / 2 )
+            .attr("cx", srcCoords.x )
+            .attr("cy", srcCoords.y )
             .attr("r", calculateCircleSize(this.state.current.source_amount, 
                                         this.state.rates[this.state.current.src_currency]))
             .style("fill", srcCoords.color)
