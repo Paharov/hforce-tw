@@ -2,20 +2,36 @@ import testTransfers from './sample_data/transfers.json'
 import recipients from './sample_data/recipient.json'
 import senders from './sample_data/profile-service.json'
 
-export default function* testStream() {
+function* testStream() {
     const recipientsById = getRecipientsById();
     const sendersById = getSendersById();
     while (true) {
         for (var element in testTransfers) {
             var transfer = testTransfers[element];
             var result = {
-                ...transfer, 
+                ...transfer,
                 recipient: recipientsById[transfer.recipient_id],
                 sender: sendersById[transfer.id]
-            } 
+            }
             yield result;
         }
     }
+}
+
+function currencies() {
+    var seen = {};
+    return testTransfers
+        .map(transfer => transfer.src_currency)
+        .filter(item =>
+            (seen.hasOwnProperty(item) ? false : (seen[item] = true)))
+}
+
+function countries() {
+    var seen = {};
+    return recipients
+        .map(recipient => recipient.country)
+        .filter(item =>
+            (seen.hasOwnProperty(item) ? false : (seen[item] = true)))
 }
 
 function getRecipientsById() {
@@ -26,11 +42,12 @@ function getRecipientsById() {
     return result;
 }
 
-function getSendersById(){
-    let result= {};
+function getSendersById() {
+    let result = {};
     senders.forEach(sender => {
         result[sender.id] = sender;
     });
     return result;
 }
 
+export { testStream, currencies, countries }

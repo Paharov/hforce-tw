@@ -1,4 +1,4 @@
-import testStream from './TestStream'
+import {testStream, currencies, countries} from './TestStream'
 import { select } from 'd3-selection'
 import { scaleOrdinal } from 'd3-scale'
 import { force } from 'd3-force'
@@ -11,6 +11,8 @@ class Visual extends Component {
         super(props);
         this.state = {
             streamGen: testStream(),
+            currencies: currencies(),
+            countries: countries(),
             current: null,
             interval: 1000
         }
