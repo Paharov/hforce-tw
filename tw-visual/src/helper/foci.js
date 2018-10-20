@@ -12,7 +12,10 @@ export function getFoci(currencies){
 };
 
 export function getCurrencyMap(currencies){
-    let foci = getFoci(currencies)
+    var foci = getFoci(currencies)
+    console.log(foci)
+    shuffle(foci)
+    console.log(foci)
     var currencyMap = {}
     currencies.forEach((currency, i) => {
         currencyMap[currency] = {
@@ -21,4 +24,14 @@ export function getCurrencyMap(currencies){
         }
     })
     return currencyMap
+}
+
+function shuffle(array) {
+    let n = array.length
+    for (var i = 0; i < n; i++) {
+        var swapTargetIndex = Math.floor(Math.random() * (n - 1 - i) + i)
+        var temp = array[i]
+        array[i] = array[swapTargetIndex]
+        array[swapTargetIndex] = temp
+    }
 }
