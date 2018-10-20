@@ -54,7 +54,9 @@ class Force extends Component {
         var force = d3.layout.force()
             .nodes(nodes)
             .links([])
-            .gravity(0.001)
+            .friction(0.1)
+            .charge(-400)
+            .gravity(0.005)
             .size([width, height])
             .on("tick", this.doTick);
 
@@ -87,7 +89,7 @@ class Force extends Component {
     }
 
     doTick = (e) => {
-        var k = 0.005;
+        var k = 0.05;
 
         // Push nodes toward their designated focus.
         let node = this.state.currNode;
