@@ -89,6 +89,8 @@ class Force extends Component {
     }
 
     newBall = () => {     
+
+        console.log(this.state.rates)
         
         console.log(this.state.current)
         const srcCoords = this.state.currencyMap[this.state.current.src_currency];
@@ -117,9 +119,7 @@ class Force extends Component {
 
     componentDidMount() {
         this.createBalls();
-        this.setState({
-            rates: getRatesMap(this)
-        })
+        getRatesMap(this);
     }
 
     componentWillReceiveProps(nextProps) {
