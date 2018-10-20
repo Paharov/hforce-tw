@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import { getFoci, getCurrencyMap } from './helper/foci.js';
 import { getRatesMap, calculateCircleSize } from './helper/converter.js';
-import logo from './resources/transferwise_small_logo.png';
 import USD from './images/usd.jpg';
 import CNY from './images/cny.jpg';
 import EUR from './images/eur.jpg';
@@ -50,7 +49,7 @@ class Force extends Component {
             .attr("id", "mainSvg")
             .attr("width", "100%")
             .attr("height", height * 1.4)
-            .style("background-color", "#f5f7f9");
+            .style("background-color", "#faf2f2");
 
         var force = d3.layout.force()
             .nodes(nodes)

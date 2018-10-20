@@ -23,7 +23,7 @@ const styles = {
 function NavBar(props) {
     const { classes } = props;
     return(
-        <AppBar style={{viewportWidth: "100%"}}>
+        <AppBar style={{viewportWidth: "100%", backgroundColor: "#37517e"}}>
             <Toolbar>
                 <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"/>
                 {<img width="13%" height="13%" src={logo} style={styles.logo}/>}
