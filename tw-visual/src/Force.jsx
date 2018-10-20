@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3'
-import { getFoci, getCurrencyMap } from './helper/foci.js'; 
+import { getFoci, getCurrencyMap } from './helper/foci.js';
 
 class Force extends Component {
     constructor(props) {
@@ -13,10 +13,12 @@ class Force extends Component {
             nodes: null,
             foci: null,
             force: null,
-            svg: null
+            svg: null,
+            currNode: null
         }
         this.createBalls = this.createBalls.bind(this);
         this.newBall = this.newBall.bind(this);
+        this.doTick = this.doTick.bind(this);
     }
 
     createBalls = () => {
@@ -35,54 +37,50 @@ class Force extends Component {
             .links([])
             .gravity(0)
             .size([width, height])
-            .on("tick", tick);
+            .on("tick", this.doTick);
 
         force.start();
-        
+
         var node = svg.selectAll("circle");
 
         this.setState({
             nodes: nodes,
             foci: foci,
             force: force,
-            svg: svg
+            svg: svg,
+            currNode: node
         })
 
-        function tick(e) {
-            var k = .1 * e.alpha;
 
-            // Push nodes toward their designated focus.
-            nodes.forEach(function (o, i) {
-                o.y += (foci[o.id].y - o.y) * k;
-                o.x += (foci[o.id].x - o.x) * k;
-            });
+    }
 
-            node
-                .attr("cx", function (d) { return d.x; })
-                .attr("cy", function (d) { return d.y; });
-        }
+    doTick = (e) => {
+        var k = .1 * e.alpha;
+
+        // Push nodes toward their designated focus.
+        let foci = this.state.foci;
+        let node = this.state.currNode;
+
+        this.state.nodes.forEach(function (o, i) {
+            o.y += (foci[o.id].y - o.y) * k;
+            o.x += (foci[o.id].x - o.x) * k;
+        });
+
+        node
+            .attr("cx", function (d) { return d.x; })
+            .attr("cy", function (d) { return d.y; });
     }
 
     newBall = () => {
 
-        let src = this.state.current ? this.state.current.src_currency : "no";
-        let dest = this.state.current ? this.state.current.tgt_currency : "no";
-
-        console.log(src);
-        console.log(dest);
-        console.log(this.state.current);
-        let currMap = getCurrencyMap(this.state.currencies);
-        console.log(currMap);
-        let coords = currMap[src];
-        console.log(coords)
-
-        var node = this.state.svg.selectAll("circle");
+        let currencyMap = getCurrencyMap(this.state.currencies);
+        let coords = currencyMap[this.state.current.src_currency];
 
         this.state.nodes.push({ id: ~~(Math.random() * this.state.foci.length) });
         this.state.force.start();
 
-        node = node.data(this.state.nodes);
-                
+        var node = this.state.currNode.data(this.state.nodes);
+
         node.enter().append("circle")
             .attr("class", "node")
             .attr("cx", function (d) { return coords.x; })
@@ -90,6 +88,10 @@ class Force extends Component {
             .attr("r", 8)
             .style("fill", "red")
             .call(this.state.force.drag);
+
+        this.setState({
+            currNode: node
+        })
     }
 
 
@@ -103,7 +105,7 @@ class Force extends Component {
             countries: nextProps.countries,
             current: nextProps.current
         })
-        if (this.state.current) {
+        if (this.state.current !== null) {
             this.newBall();
         }
     }
