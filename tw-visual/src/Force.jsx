@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3'
 import { getFoci, getCurrencyMap } from './helper/foci.js';
+import { getRatesMap } from './helper/converter.js';
 
 class Force extends Component {
     constructor(props) {
@@ -15,7 +16,8 @@ class Force extends Component {
             force: null,
             svg: null,
             currNode: null,
-            currencyMap: getCurrencyMap(props.currencies, 650, 450, 250)
+            currencyMap: getCurrencyMap(props.currencies, 650, 450, 250),
+            rates: null
         }
         this.createBalls = this.createBalls.bind(this);
         this.newBall = this.newBall.bind(this);
@@ -23,6 +25,7 @@ class Force extends Component {
     }
 
     createBalls = () => {
+
         var width = 960,
             height = 1000;
 
@@ -60,12 +63,10 @@ class Force extends Component {
 
         // Push nodes toward their designated focus.
         let foci = this.state.foci;
-        // console.log(foci);
         let node = this.state.currNode;
         let currencyMap = this.state.currencyMap;
 
         this.state.nodes.forEach(function (o, i) {
-            // console.log(o);
             o.y += (currencyMap[o.id].y - o.y) * k;
             o.x += (currencyMap[o.id].x - o.x) * k;
         });
@@ -76,11 +77,9 @@ class Force extends Component {
     }
 
     newBall = () => {
+        console.log(this.state.rates)
 
         const srcCoords = this.state.currencyMap[this.state.current.src_currency];
-        const tgtCoords = this.state.currencyMap[this.state.current.tgt_currency];
-
-        console.log(this.state.currencyMap)
 
         this.state.nodes.push({ id: this.state.current.tgt_currency });
         this.state.force.start();
@@ -102,6 +101,9 @@ class Force extends Component {
 
     componentDidMount() {
         this.createBalls();
+        this.setState({
+            rates: getRatesMap(this)
+        })
     }
 
     componentWillReceiveProps(nextProps) {
