@@ -28,8 +28,8 @@ export function getFoci(n, centerX, centerY, r){
             y: center.y + r * Math.sin((2*i*Math.PI)/n)
         })
         result.labelCoordinates.push({
-            x: center.x + (1.4 * r) * Math.cos((2*i*Math.PI)/n),
-            y: center.y + (1.4 * r) * Math.sin((2*i*Math.PI)/n)
+            x: center.x + (1 * r) * Math.cos((2*i*Math.PI)/n),
+            y: center.y + (1 * r) * Math.sin((2*i*Math.PI)/n)
         })
     }
     return result

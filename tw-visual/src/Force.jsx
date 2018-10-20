@@ -19,7 +19,7 @@ class Force extends Component {
             rates: null,
             height: props.height,
             width: props.width,
-            currencyMap: getCurrencyMap(props.currencies, props.width / 2, (props.height / 2) + props.height * 0.2, Math.min(props.width, props.height) / 3)
+            currencyMap: getCurrencyMap(props.currencies, props.width / 2, (props.height / 2) + props.height * 0.2, Math.min(props.width, props.height) / 1.75)
         }
         this.createBalls = this.createBalls.bind(this);
         this.newBall = this.newBall.bind(this);
@@ -32,7 +32,7 @@ class Force extends Component {
             height = this.state.height;
 
         var nodes = [],
-            foci = getFoci(this.state.currencies.length, width / 2, (height / 2) + height * 0.2, Math.min(width, height) / 3).foci;
+            foci = getFoci(this.state.currencies.length, width / 2, (height / 2) + height * 0.2, Math.min(width, height) / 1.75).foci;
 
         var svg = d3.select(this.nodeRef.current.nodeName).append("svg")
             .attr("id", "mainSvg")
@@ -42,7 +42,7 @@ class Force extends Component {
         var force = d3.layout.force()
             .nodes(nodes)
             .links([])
-            .gravity(0.02)
+            .gravity(0.005)
             .size([width, height])
             .on("tick", this.doTick);
 
@@ -52,6 +52,7 @@ class Force extends Component {
             key => {
                 d3.select("#mainSvg")
                     .append("text")
+                    .attr("class", "labelElement")
                     .attr("x", currMap[key].labelX)
                     .attr("y", currMap[key].labelY)
                     .style("font-size", "0.5em")
@@ -107,7 +108,10 @@ class Force extends Component {
 
         const node = this.state.currNode.data(this.state.nodes);
 
-        let circleSelection = node.enter().append("circle");
+        var width = this.state.width
+        var height = this.state.height
+
+        let circleSelection = node.enter().insert("circle", ".labelElement");
         circleSelection
             .attr("class", "node")
             .attr("cx", srcCoords.x )
@@ -117,7 +121,7 @@ class Force extends Component {
             .style("fill", srcCoords.color)
             .append("title")
             .text(this.state.current.src_currency + " => " + this.state.current.tgt_currency)
-            .call(this.state.force.drag);
+            .call(this.state.force.drag());
         this.scheduleBallExecution(circleSelection);
         this.setState({
             currNode: node

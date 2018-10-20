@@ -56,7 +56,7 @@ class Visual extends Component {
                 <div className={classes.force}>
                     <SizeMe>
                         {({ size }) => 
-                            <Force {...this.state} width={size.width} height={size.height ? size.height : 300} />}
+                            <Force {...this.state} width={size.width} height={size.height ? size.height : 550} />}
                     </SizeMe>
                 </div>
             </React.Fragment>
