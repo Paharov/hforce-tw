@@ -3,7 +3,6 @@ export function getCurrencyMap(currencies, centerX, centerY, r){
     var colors = getColors(currencies.length)
     shuffle(foci)
     shuffle(colors)
-    console.log(colors)
     var currencyMap = {}
     currencies.forEach((currency, i) => {
         currencyMap[currency] = {
@@ -28,11 +27,14 @@ export function getFoci(n, centerX, centerY, r){
 };
 
 function getColors(n){
+    let alphabet = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f']
     var colors = []
     for (var i = 0; i < n; i++) {
-        colors.push("#" + `${parseInt(Math.floor(Math.random() * 255) / i)}`
-            + `${parseInt(Math.floor(Math.random() * 255) / i)}`
-            + `${parseInt(Math.floor(Math.random() * 255) / i)}`)
+        var currentColor = "#"
+        for(var j = 0; j < 6; j++) {
+            currentColor += alphabet[~~(Math.random() * alphabet.length)]
+        }
+        colors.push(currentColor)
     }
     return colors
 }
