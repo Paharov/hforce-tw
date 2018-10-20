@@ -13,9 +13,7 @@ export function getFoci(currencies){
 
 export function getCurrencyMap(currencies){
     var foci = getFoci(currencies)
-    console.log(foci)
     shuffle(foci)
-    console.log(foci)
     var currencyMap = {}
     currencies.forEach((currency, i) => {
         currencyMap[currency] = {
