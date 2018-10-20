@@ -24,6 +24,7 @@ class Force extends Component {
         this.createBalls = this.createBalls.bind(this);
         this.newBall = this.newBall.bind(this);
         this.doTick = this.doTick.bind(this);
+        this.scheduleBallExecution = this.scheduleBallExecution.bind(this);
     }
 
     createBalls = () => {
@@ -87,6 +88,12 @@ class Force extends Component {
             .attr("cy", function (d) { return d.y; });
     }
 
+    scheduleBallExecution = (ball) => {
+        setTimeout(function() {
+            ball.remove()
+        }, this.state.interval * 50)
+    }
+
     newBall = () => {     
 
         console.log(this.state.rates)
@@ -100,7 +107,8 @@ class Force extends Component {
 
         const node = this.state.currNode.data(this.state.nodes);
 
-        node.enter().append("circle")
+        let circleSelection = node.enter().append("circle");
+        circleSelection
             .attr("class", "node")
             .attr("cx", srcCoords.x )
             .attr("cy", srcCoords.y )
@@ -110,7 +118,7 @@ class Force extends Component {
             .append("title")
             .text(this.state.current.src_currency + " => " + this.state.current.tgt_currency)
             .call(this.state.force.drag);
-
+        this.scheduleBallExecution(circleSelection);
         this.setState({
             currNode: node
         })
