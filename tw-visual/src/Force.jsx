@@ -124,7 +124,7 @@ class Force extends Component {
 
     render() {
         return (
-            <svg style={{overflow: "visible"}} width="100%" height="100%" ref={node => this.node = node}></svg>
+            <React.Fragment ref={node => this.node = node}/>
         );
     }
 }
