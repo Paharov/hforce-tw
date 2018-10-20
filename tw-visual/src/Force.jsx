@@ -14,7 +14,8 @@ class Force extends Component {
             foci: null,
             force: null,
             svg: null,
-            currNode: null
+            currNode: null,
+            currencyMap: getCurrencyMap(props.currencies, 650, 450, 250)
         }
         this.createBalls = this.createBalls.bind(this);
         this.newBall = this.newBall.bind(this);
@@ -26,7 +27,7 @@ class Force extends Component {
             height = 1000;
 
         var nodes = [],
-            foci = getFoci(this.state.currencies.length);
+            foci = getFoci(this.state.currencies.length, 650, 450, 250);
 
         var svg = d3.select("body").append("svg")
             .attr("width", width)
@@ -73,11 +74,11 @@ class Force extends Component {
 
     newBall = () => {
 
-        const currencyMap = getCurrencyMap(this.state.currencies);
-        const srcCoords = currencyMap[this.state.current.src_currency];
-        const tgtCoords = currencyMap[this.state.current.tgt_currency];
+        const srcCoords = this.state.currencyMap[this.state.current.src_currency];
+        const tgtCoords = this.state.currencyMap[this.state.current.tgt_currency];
+        console.log(tgtCoords);
 
-        this.state.nodes.push({ id: ~~(Math.random() * this.state.foci.length) });
+        this.state.nodes.push({ id: tgtCoords.currency });
         this.state.force.start();
 
         const node = this.state.currNode.data(this.state.nodes);
@@ -87,7 +88,7 @@ class Force extends Component {
             .attr("cx", function (d) { return srcCoords.x; })
             .attr("cy", function (d) { return srcCoords.y; })
             .attr("r", 8)
-            .style("fill", "#555888")
+            .style("fill", srcCoords.color)
             .call(this.state.force.drag);
 
         this.setState({
