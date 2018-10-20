@@ -1,14 +1,16 @@
 export function getCurrencyMap(currencies, centerX, centerY, r){
-    var foci = getFoci(currencies.length, centerX, centerY, r)
+    var fociResult = getFoci(currencies.length, centerX, centerY, r)
     var colors = getColors(currencies.length)
-    shuffle(foci)
+    shuffleFociResult(fociResult)
     shuffle(colors)
     var currencyMap = {}
     currencies.forEach((currency, i) => {
         currencyMap[currency] = {
-            x: foci[i].x,
-            y: foci[i].y,
-            color: colors[i]
+            x: fociResult.foci[i].x,
+            y: fociResult.foci[i].y,
+            color: colors[i],
+            labelX: fociResult.labelCoordinates[i].x,
+            labelY: fociResult.labelCoordinates[i].y
         }
     })
     return currencyMap
@@ -16,14 +18,21 @@ export function getCurrencyMap(currencies, centerX, centerY, r){
 
 export function getFoci(n, centerX, centerY, r){
     let center = { x: centerX, y: centerY }
-    var foci = []
+    var result = {
+        foci: [],
+        labelCoordinates: []
+    }
     for (var i = 0; i < n; i++) {
-        foci.push({
+        result.foci.push({
             x: center.x + r * Math.cos((2*i*Math.PI)/n),
             y: center.y + r * Math.sin((2*i*Math.PI)/n)
         })
+        result.labelCoordinates.push({
+            x: center.x + (1.4 * r) * Math.cos((2*i*Math.PI)/n),
+            y: center.y + (1.4 * r) * Math.sin((2*i*Math.PI)/n)
+        })
     }
-    return foci
+    return result
 };
 
 function getColors(n){
@@ -46,5 +55,18 @@ function shuffle(array) {
         var temp = array[i]
         array[i] = array[swapTargetIndex]
         array[swapTargetIndex] = temp
+    }
+}
+
+function shuffleFociResult(result) {
+    let n = result.foci.length
+    for (var i = 0; i < n; i++) {
+        var swapTargetIndex = Math.floor(Math.random() * (n - 1 - i) + i)
+        var tempFocus = result.foci[i]
+        var tempLabelCoordinate = result.labelCoordinates[i]
+        result.foci[i] = result.foci[swapTargetIndex]
+        result.foci[swapTargetIndex] = tempFocus
+        result.labelCoordinates[i] = result.labelCoordinates[swapTargetIndex]
+        result.labelCoordinates[swapTargetIndex] = tempLabelCoordinate
     }
 }

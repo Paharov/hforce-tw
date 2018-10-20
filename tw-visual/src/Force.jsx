@@ -32,7 +32,7 @@ class Force extends Component {
             height = this.state.height;
 
         var nodes = [],
-            foci = getFoci(this.state.currencies.length, width / 2, (height / 2) + height * 0.2, Math.min(width, height) / 3);
+            foci = getFoci(this.state.currencies.length, width / 2, (height / 2) + height * 0.2, Math.min(width, height) / 3).foci;
 
         var svg = d3.select(this.nodeRef.current.nodeName).append("svg")
             .attr("id", "mainSvg")
@@ -45,6 +45,18 @@ class Force extends Component {
             .gravity(0.02)
             .size([width, height])
             .on("tick", this.doTick);
+
+        var currMap = this.state.currencyMap;
+
+        Object.keys(currMap).forEach(
+            key => {
+                d3.select("#mainSvg")
+                    .append("text")
+                    .attr("x", currMap[key].labelX)
+                    .attr("y", currMap[key].labelY)
+                    .style("font-size", "0.5em")
+                    .text(key)
+            });
 
         force.start();
 
