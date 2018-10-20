@@ -16,8 +16,7 @@ const styles = theme => ({
     },
     force: {
         padding: theme.spacing.unit * 5,
-        position: "relative",
-        "z-index": 100000,
+        position: "relative"
     }
 });
 
@@ -55,8 +54,8 @@ class Visual extends Component {
                 <NavBar />
                 <div className={classes.force}>
                     <SizeMe>
-                        {({ size }) =>
-                            <Force {...this.state} width={size.width} height={size.height} />}
+                        {({ size }) => 
+                            <Force {...this.state} width={size.width} height={size.height ? size.height : 300} />}
                     </SizeMe>
                 </div>
             </React.Fragment>
