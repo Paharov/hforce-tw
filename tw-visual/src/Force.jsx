@@ -32,7 +32,7 @@ class Force extends Component {
             height = this.state.height;
 
         var nodes = [],
-            foci = getFoci(this.state.currencies.length, width / 2, (height / 2) + height * 0.2, Math.min(width, height) / 3);
+            foci = getFoci(this.state.currencies.length, width / 2, (height / 2) + height * 0.2, Math.min(width, height) / 3).foci;
 
         var svg = d3.select(this.nodeRef.current.nodeName).append("svg")
             .attr("id", "mainSvg")
@@ -42,9 +42,21 @@ class Force extends Component {
         var force = d3.layout.force()
             .nodes(nodes)
             .links([])
-            .gravity(0)
+            .gravity(0.02)
             .size([width, height])
             .on("tick", this.doTick);
+
+        var currMap = this.state.currencyMap;
+
+        Object.keys(currMap).forEach(
+            key => {
+                d3.select("#mainSvg")
+                    .append("text")
+                    .attr("x", currMap[key].labelX)
+                    .attr("y", currMap[key].labelY)
+                    .style("font-size", "0.5em")
+                    .text(key)
+            });
 
         force.start();
 
@@ -60,10 +72,9 @@ class Force extends Component {
     }
 
     doTick = (e) => {
-        var k = .1 * e.alpha;
+        var k = .05 * e.alpha;
 
         // Push nodes toward their designated focus.
-        let foci = this.state.foci;
         let node = this.state.currNode;
         let currencyMap = this.state.currencyMap;
 
@@ -77,16 +88,11 @@ class Force extends Component {
             .attr("cy", function (d) { return d.y; });
     }
 
-    newBall = () => {
-        console.log(this.state.rates)
-        console.log(this.state.currencyMap)
-        console.log(this.state.current);
+    newBall = () => {     
         
-        
+        console.log(this.state.current)
         const srcCoords = this.state.currencyMap[this.state.current.src_currency];
-
         console.log(srcCoords);
-
 
         this.state.nodes.push({ id: this.state.current.tgt_currency });
         this.state.force.start();
@@ -95,8 +101,8 @@ class Force extends Component {
 
         node.enter().append("circle")
             .attr("class", "node")
-            .attr("cx", function (d) { return srcCoords.x; })
-            .attr("cy", function (d) { return srcCoords.y; })
+            .attr("cx", srcCoords.x )
+            .attr("cy", srcCoords.y )
             .attr("r", calculateCircleSize(this.state.current.source_amount, 
                                         this.state.rates[this.state.current.src_currency]))
             .style("fill", srcCoords.color)
