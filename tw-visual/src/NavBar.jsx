@@ -9,12 +9,12 @@ const styles = {
       marginLeft: 10,
       marginRight: 20,
       marginBottom: 2,
-      size: "110%"
+      size: "120%"
     },
     title: {
         marginLeft: "auto", 
         fontFamily: "Ubuntu", 
-        marginRight: "38%", 
+        marginRight: "35%", 
         fontSize: "1.5rem",
         letterSpacing: "0.05em"
     }

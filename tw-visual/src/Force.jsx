@@ -48,7 +48,7 @@ class Force extends Component {
 
         var svg = d3.select(this.nodeRef.current.nodeName).append("svg")
             .attr("id", "mainSvg")
-            .attr("width", width + width * 0.4)
+            .attr("width", width * 0.95)
             .attr("height", height + height * 0.4);
 
         var force = d3.layout.force()
