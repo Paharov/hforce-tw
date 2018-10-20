@@ -20,10 +20,15 @@ function* testStream() {
 
 function currencies() {
     var seen = {};
-    return testTransfers
+    let sourceCurrencies = testTransfers
         .map(transfer => transfer.src_currency)
         .filter(item =>
-            (seen.hasOwnProperty(item) ? false : (seen[item] = true)))
+            (seen.hasOwnProperty(item) ? false : (seen[item] = true)));
+    let targetCurrencies = testTransfers
+            .map(transfer => transfer.tgt_currency)
+            .filter(item =>
+                (seen.hasOwnProperty(item) ? false : (seen[item] = true)));
+    return sourceCurrencies.concat(targetCurrencies);
 }
 
 function countries() {
