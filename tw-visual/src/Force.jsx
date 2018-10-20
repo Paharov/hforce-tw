@@ -60,11 +60,14 @@ class Force extends Component {
 
         // Push nodes toward their designated focus.
         let foci = this.state.foci;
+        // console.log(foci);
         let node = this.state.currNode;
+        let currencyMap = this.state.currencyMap;
 
         this.state.nodes.forEach(function (o, i) {
-            o.y += (foci[o.id].y - o.y) * k;
-            o.x += (foci[o.id].x - o.x) * k;
+            // console.log(o);
+            o.y += (currencyMap[o.id].y - o.y) * k;
+            o.x += (currencyMap[o.id].x - o.x) * k;
         });
 
         node
@@ -76,9 +79,10 @@ class Force extends Component {
 
         const srcCoords = this.state.currencyMap[this.state.current.src_currency];
         const tgtCoords = this.state.currencyMap[this.state.current.tgt_currency];
-        console.log(tgtCoords);
 
-        this.state.nodes.push({ id: tgtCoords.currency });
+        console.log(this.state.currencyMap)
+
+        this.state.nodes.push({ id: this.state.current.tgt_currency });
         this.state.force.start();
 
         const node = this.state.currNode.data(this.state.nodes);
