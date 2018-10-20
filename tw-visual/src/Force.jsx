@@ -10,10 +10,11 @@ class Force extends Component {
             current: props.current,
             interval: props.interval
         }
-        this.createBalls = this.createBalls.bind(this);
+        this.createFoci = this.createFoci.bind(this);
+        this.placeBall = this.placeBall.bind(this);
     }
 
-    createBalls = () => {
+    createFoci = () => {
         var width = 960,
             height = 500;
 
@@ -33,6 +34,8 @@ class Force extends Component {
             .size([width, height])
             .on("tick", tick);
 
+        force.start();
+        
         var node = svg.selectAll("circle");
 
         function tick(e) {
@@ -48,27 +51,26 @@ class Force extends Component {
                 .attr("cx", function (d) { return d.x; })
                 .attr("cy", function (d) { return d.y; });
         }
+    }
 
-        setInterval(function () {
-            nodes.push({ id: ~~(Math.random() * foci.length) });
-            force.start();
+    placeBall = () => {
+        nodes.push({ id: ~~(Math.random() * foci.length) });
 
-            node = node.data(nodes);
+        node = node.data(nodes);
 
-            node.enter().append("circle")
-                .attr("class", "node")
-                .attr("cx", function (d) { return d.x; })
-                .attr("cy", function (d) { return d.y; })
-                .attr("r", 8)
-                .style("fill", function (d) { return fill(d.id); })
-                .style("stroke", function (d) { return d3.rgb(fill(d.id)).darker(2); })
-                .call(force.drag);
-        }, 500);
+        node.enter().append("circle")
+            .attr("class", "node")
+            .attr("cx", function (d) { return d.x; })
+            .attr("cy", function (d) { return d.y; })
+            .attr("r", 8)
+            .style("fill", function (d) { return fill(d.id); })
+            .style("stroke", function (d) { return d3.rgb(fill(d.id)).darker(2); })
+            .call(force.drag);
     }
 
 
     componentDidMount() {
-        this.createBalls();
+        this.createFoci();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -77,6 +79,7 @@ class Force extends Component {
             countries: nextProps.countries,
             current: nextProps.current
         })
+        this.createBalls();
     }
 
     render() {
