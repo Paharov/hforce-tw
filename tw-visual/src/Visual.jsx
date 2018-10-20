@@ -1,4 +1,4 @@
-import {testStream, currencies, countries} from './TestStream'
+import { testStream, currencies, countries } from './TestStream'
 import * as d3 from 'd3'
 import React, { Component } from 'react';
 
@@ -24,19 +24,21 @@ class Visual extends Component {
         var width = 960,
             height = 500;
 
-        var fill = scaleOrdinal(d3.schemeCategory10);
+        var fill = d3.scale.category10();
 
         var nodes = [],
-            foci = [{ x: 150, y: 150 }, { x: 800, y: 400 }, { x: 500, y: 400 }];
+            foci = [{ x: 150, y: 150 }, { x: 350, y: 250 }, { x: 700, y: 400 }];
 
-        var svg = select("body").append("svg")
+        var svg = d3.select("body").append("svg")
             .attr("width", width)
             .attr("height", height);
 
-        var forced = d3.forceSimulation()
+        var force = d3.layout.force()
             .nodes(nodes)
-            .tick(tick);
-        
+            .links([])
+            .gravity(0)
+            .size([width, height])
+            .on("tick", tick);
 
         var node = svg.selectAll("circle");
 
@@ -56,6 +58,7 @@ class Visual extends Component {
 
         setInterval(function () {
             nodes.push({ id: ~~(Math.random() * foci.length) });
+            force.start();
 
             node = node.data(nodes);
 
@@ -66,7 +69,7 @@ class Visual extends Component {
                 .attr("r", 8)
                 .style("fill", function (d) { return fill(d.id); })
                 .style("stroke", function (d) { return d3.rgb(fill(d.id)).darker(2); })
-                .call(d3.drag)
+                .call(force.drag);
         }, 500);
     }
 
