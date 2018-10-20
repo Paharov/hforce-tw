@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3'
+import { getFoci, getCurrencyMap } from './helper/foci.js'; 
 
 class Force extends Component {
     constructor(props) {
@@ -8,16 +9,19 @@ class Force extends Component {
             currencies: props.currencies,
             countries: props.countries,
             current: props.current,
-            interval: props.interval
+            interval: props.interval,
+            nodes: null,
+            foci: null,
+            force: null,
+            svg: null
         }
         this.createBalls = this.createBalls.bind(this);
+        this.newBall = this.newBall.bind(this);
     }
 
     createBalls = () => {
         var width = 960,
-            height = 500;
-
-        var fill = d3.scale.category10();
+            height = 1000;
 
         var nodes = [],
             foci = [{ x: 150, y: 150 }, { x: 350, y: 250 }, { x: 700, y: 400 }];
@@ -33,7 +37,16 @@ class Force extends Component {
             .size([width, height])
             .on("tick", tick);
 
+        force.start();
+        
         var node = svg.selectAll("circle");
+
+        this.setState({
+            nodes: nodes,
+            foci: foci,
+            force: force,
+            svg: svg
+        })
 
         function tick(e) {
             var k = .1 * e.alpha;
@@ -48,22 +61,35 @@ class Force extends Component {
                 .attr("cx", function (d) { return d.x; })
                 .attr("cy", function (d) { return d.y; });
         }
+    }
 
-        setInterval(function () {
-            nodes.push({ id: ~~(Math.random() * foci.length) });
-            force.start();
+    newBall = () => {
 
-            node = node.data(nodes);
+        let src = this.state.current ? this.state.current.src_currency : "no";
+        let dest = this.state.current ? this.state.current.tgt_currency : "no";
 
-            node.enter().append("circle")
-                .attr("class", "node")
-                .attr("cx", function (d) { return d.x; })
-                .attr("cy", function (d) { return d.y; })
-                .attr("r", 8)
-                .style("fill", function (d) { return fill(d.id); })
-                .style("stroke", function (d) { return d3.rgb(fill(d.id)).darker(2); })
-                .call(force.drag);
-        }, 500);
+        console.log(src);
+        console.log(dest);
+        console.log(this.state.current);
+        let currMap = getCurrencyMap(this.state.currencies);
+        console.log(currMap);
+        let coords = currMap[src];
+        console.log(coords)
+
+        var node = this.state.svg.selectAll("circle");
+
+        this.state.nodes.push({ id: ~~(Math.random() * this.state.foci.length) });
+        this.state.force.start();
+
+        node = node.data(this.state.nodes);
+                
+        node.enter().append("circle")
+            .attr("class", "node")
+            .attr("cx", function (d) { return coords.x; })
+            .attr("cy", function (d) { return coords.y; })
+            .attr("r", 8)
+            .style("fill", "red")
+            .call(this.state.force.drag);
     }
 
     componentDidMount() {
@@ -76,6 +102,9 @@ class Force extends Component {
             countries: nextProps.countries,
             current: nextProps.current
         })
+        if (this.state.current) {
+            this.newBall();
+        }
     }
 
     render() {
