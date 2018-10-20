@@ -14,7 +14,8 @@ const styles = theme => ({
     },
     force: {
         position: "relative",
-        margin: "auto"
+        margin: "auto",
+        paddingBottom: "50px"
     }
 });
 
@@ -55,7 +56,7 @@ class Visual extends Component {
                 <div className={classes.force}>
                     <SizeMe>
                         {({ size }) => 
-                            <Force {...this.state} width={size.width} height={size.height ? size.height : 550} />}
+                            <Force {...this.state} width={size.width} height={size.height ? size.height : 400} />}
                     </SizeMe>
                 </div>
             </React.Fragment>

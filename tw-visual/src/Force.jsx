@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import { getFoci, getCurrencyMap } from './helper/foci.js';
 import { getRatesMap, calculateCircleSize } from './helper/converter.js';
-import logo from './resources/transferwise_small_logo.png' 
 
 class Force extends Component {
     constructor(props) {
@@ -20,7 +19,7 @@ class Force extends Component {
             rates: null,
             height: props.height,
             width: props.width,
-            currencyMap: getCurrencyMap(props.currencies, props.width / 2, (props.height / 2) + props.height * 0.2, Math.min(props.width, props.height) / 1.75)
+            currencyMap: getCurrencyMap(props.currencies, props.width / 2, (props.height / 2) + props.height * 0.2, Math.min(props.width, props.height) / 2.2)
         }
         this.createBalls = this.createBalls.bind(this);
         this.newBall = this.newBall.bind(this);
@@ -33,11 +32,11 @@ class Force extends Component {
             height = this.state.height;
 
         var nodes = [],
-            foci = getFoci(this.state.currencies.length, width / 2, (height / 2) + height * 0.2, Math.min(width, height) / 1.75).foci;
+            foci = getFoci(this.state.currencies.length, width / 2, (height / 2) + height * 0.2, Math.min(width, height) / 2.2).foci;
 
         var svg = d3.select(this.nodeRef.current.nodeName).append("svg")
             .attr("id", "mainSvg")
-            .attr("width", width + width * 0.4)
+            .attr("width", width * 0.95)
             .attr("height", height + height * 0.4);
 
         var force = d3.layout.force()
