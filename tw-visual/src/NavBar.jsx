@@ -22,7 +22,7 @@ const styles = {
 function NavBar(props) {
     const { classes } = props;
     return(
-        <AppBar position="static">
+        <AppBar style={{viewportWidth: "100%"}}>
             <Toolbar>
                 <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"/>
                 {<img width="13%" height="13%" src={logo} style={styles.logo}/>}

@@ -5,7 +5,6 @@ import NavBar from './NavBar'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { SizeMe } from 'react-sizeme'
-import logo from './resources/transferwise_small_logo.png' 
 
 
 const styles = theme => ({
@@ -15,7 +14,8 @@ const styles = theme => ({
         paddingBottom: theme.spacing.unit * 5,
     },
     force: {
-        position: "relative"
+        position: "relative",
+        margin: "auto"
     }
 });
 
@@ -53,7 +53,6 @@ class Visual extends Component {
         return (
             <React.Fragment>
                 <NavBar />
-                {<img src={logo} style={{position: "absolute", top: "60%", left: "48%", height: "auto", width: "120px"}}/>}
                 <div className={classes.force}>
                     <SizeMe>
                         {({ size }) => 
