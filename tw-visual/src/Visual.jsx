@@ -1,7 +1,4 @@
 import {testStream, currencies, countries} from './TestStream'
-import { select } from 'd3-selection'
-import { scaleOrdinal } from 'd3-scale'
-import { force } from 'd3-force'
 import * as d3 from 'd3'
 import React, { Component } from 'react';
 
