@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import * as d3 from 'd3'
+import * as d3 from 'd3';
 import { getFoci, getCurrencyMap } from './helper/foci.js';
+import { EventEmitter } from 'events';
 
 class Force extends Component {
     constructor(props) {
@@ -30,6 +31,7 @@ class Force extends Component {
             foci = getFoci(this.state.currencies.length, 650, 450, 250);
 
         var svg = d3.select("body").append("svg")
+            .attr("id", "mainSvg")
             .attr("width", width)
             .attr("height", height);
 
@@ -60,12 +62,10 @@ class Force extends Component {
 
         // Push nodes toward their designated focus.
         let foci = this.state.foci;
-        // console.log(foci);
         let node = this.state.currNode;
         let currencyMap = this.state.currencyMap;
 
         this.state.nodes.forEach(function (o, i) {
-            // console.log(o);
             o.y += (currencyMap[o.id].y - o.y) * k;
             o.x += (currencyMap[o.id].x - o.x) * k;
         });
@@ -80,8 +80,6 @@ class Force extends Component {
         const srcCoords = this.state.currencyMap[this.state.current.src_currency];
         const tgtCoords = this.state.currencyMap[this.state.current.tgt_currency];
 
-        console.log(this.state.currencyMap)
-
         this.state.nodes.push({ id: this.state.current.tgt_currency });
         this.state.force.start();
 
@@ -93,6 +91,8 @@ class Force extends Component {
             .attr("cy", function (d) { return srcCoords.y; })
             .attr("r", 8)
             .style("fill", srcCoords.color)
+            .append("title")
+            .text(this.state.current.src_currency + " => " + this.state.current.tgt_currency)
             .call(this.state.force.drag);
 
         this.setState({
