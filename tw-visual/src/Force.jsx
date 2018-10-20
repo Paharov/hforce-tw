@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import { getFoci, getCurrencyMap } from './helper/foci.js';
-import { getRatesMap } from './helper/converter.js';
-import { EventEmitter } from 'events';
+import { getRatesMap, calculateCircleSize } from './helper/converter.js';
 
 class Force extends Component {
     constructor(props) {
         super(props);
+        this.nodeRef = React.createRef();
         this.state = {
             currencies: props.currencies,
             countries: props.countries,
@@ -20,7 +20,7 @@ class Force extends Component {
             rates: null,
             height: props.height,
             width: props.width,
-            currencyMap: getCurrencyMap(props.currencies, props.width / 2, props.height / 2, Math.min(props.width, props.height) / 3)
+            currencyMap: getCurrencyMap(props.currencies, props.width / 2, (props.height / 2) + props.height * 0.2, Math.min(props.width, props.height) / 3)
         }
         this.createBalls = this.createBalls.bind(this);
         this.newBall = this.newBall.bind(this);
@@ -32,14 +32,12 @@ class Force extends Component {
             height = this.state.height;
 
         var nodes = [],
-            foci = getFoci(this.state.currencies.length, width / 2, height / 2, Math.min(width, height) / 3).foci;
+            foci = getFoci(this.state.currencies.length, width / 2, (height / 2) + height * 0.2, Math.min(width, height) / 3).foci;
 
-        console.log(foci)
-
-        var svg = d3.select("body").append("svg")
+        var svg = d3.select(this.nodeRef.current.nodeName).append("svg")
             .attr("id", "mainSvg")
-            .attr("width", width)
-            .attr("height", height);
+            .attr("width", width + width * 0.4)
+            .attr("height", height + height * 0.4);
 
         var force = d3.layout.force()
             .nodes(nodes)
@@ -71,8 +69,6 @@ class Force extends Component {
             svg: svg,
             currNode: node
         })
-
-
     }
 
     doTick = (e) => {
@@ -95,8 +91,14 @@ class Force extends Component {
 
     newBall = () => {
         console.log(this.state.rates)
-
+        console.log(this.state.currencyMap)
+        console.log(this.state.current);
+        
+        
         const srcCoords = this.state.currencyMap[this.state.current.src_currency];
+
+        console.log(srcCoords);
+
 
         this.state.nodes.push({ id: this.state.current.tgt_currency });
         this.state.force.start();
@@ -107,7 +109,8 @@ class Force extends Component {
             .attr("class", "node")
             .attr("cx", function (d) { return srcCoords.x; })
             .attr("cy", function (d) { return srcCoords.y; })
-            .attr("r", 8)
+            .attr("r", calculateCircleSize(this.state.current.source_amount, 
+                                        this.state.rates[this.state.current.src_currency]))
             .style("fill", srcCoords.color)
             .append("title")
             .text(this.state.current.src_currency + " => " + this.state.current.tgt_currency)
@@ -138,7 +141,7 @@ class Force extends Component {
 
     render() {
         return (
-            <React.Fragment ref={node => this.node = node}/>
+            <div ref={this.nodeRef}/>
         );
     }
 }

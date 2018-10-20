@@ -14,3 +14,18 @@ export async function getRatesMap(component) {
     }
     return ratesMap;
 }
+
+export function calculateCircleSize(srcAmount, rate) {
+    const usdAmount = rate != 0 ? srcAmount / rate : srcAmount;
+    if (usdAmount > 10000) {
+        return 16
+    } else if (usdAmount >= 5000) {
+        return 12
+    } else if (usdAmount >= 2000) {
+        return 8
+    } else if (usdAmount >= 500) {
+        return 6
+    } else {
+        return 4
+    }
+}

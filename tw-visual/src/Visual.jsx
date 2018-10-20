@@ -15,7 +15,6 @@ const styles = theme => ({
         paddingBottom: theme.spacing.unit * 5,
     },
     force: {
-        padding: theme.spacing.unit * 5,
         position: "relative"
     }
 });
