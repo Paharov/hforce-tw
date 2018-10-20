@@ -15,7 +15,9 @@ class Force extends Component {
             force: null,
             svg: null,
             currNode: null,
-            currencyMap: getCurrencyMap(props.currencies, 650, 450, 250)
+            height: props.height,
+            width: props.width,
+            currencyMap: getCurrencyMap(props.currencies, props.width / 2, props.height / 2, Math.min(props.width, props.height) / 4)
         }
         this.createBalls = this.createBalls.bind(this);
         this.newBall = this.newBall.bind(this);
@@ -23,11 +25,11 @@ class Force extends Component {
     }
 
     createBalls = () => {
-        var width = 960,
-            height = 1000;
+        var width = this.state.width,
+            height = this.state.height;
 
         var nodes = [],
-            foci = getFoci(this.state.currencies.length, 650, 450, 250);
+            foci = getFoci(this.state.currencies.length, width / 2, height / 2, Math.min(width, height) / 4);
 
         var svg = d3.select("body").append("svg")
             .attr("width", width)
@@ -117,7 +119,7 @@ class Force extends Component {
 
     render() {
         return (
-            <svg width="100%" height="100%" ref={node => this.node = node}></svg>
+            <svg style={{overflow: "visible"}} width="100%" height="100%" ref={node => this.node = node}></svg>
         );
     }
 }
