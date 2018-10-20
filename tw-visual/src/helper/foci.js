@@ -1,27 +1,40 @@
-export function getFoci(currencies){
-    let n = currencies.length
-    let center = { x: 650, y: 450 }
+export function getCurrencyMap(currencies, centerX, centerY, r){
+    var foci = getFoci(currencies.length, centerX, centerY, r)
+    var colors = getColors(currencies.length)
+    shuffle(foci)
+    shuffle(colors)
+    console.log(colors)
+    var currencyMap = {}
+    currencies.forEach((currency, i) => {
+        currencyMap[currency] = {
+            x: foci[i].x,
+            y: foci[i].y,
+            color: colors[i]
+        }
+    })
+    return currencyMap
+}
+
+export function getFoci(n, centerX, centerY, r){
+    let center = { x: centerX, y: centerY }
     var foci = []
     for (var i = 0; i < n; i++) {
         foci.push({
-            x: center.x + 250 * Math.cos((2*i*Math.PI)/n),
-            y: center.y + 250 * Math.sin((2*i*Math.PI)/n)
+            x: center.x + r * Math.cos((2*i*Math.PI)/n),
+            y: center.y + r * Math.sin((2*i*Math.PI)/n)
         })
     }
     return foci
 };
 
-export function getCurrencyMap(currencies){
-    var foci = getFoci(currencies)
-    shuffle(foci)
-    var currencyMap = {}
-    currencies.forEach((currency, i) => {
-        currencyMap[currency] = {
-            x: foci[i].x,
-            y: foci[i].y
-        }
-    })
-    return currencyMap
+function getColors(n){
+    var colors = []
+    for (var i = 0; i < n; i++) {
+        colors.push("#" + `${parseInt(Math.floor(Math.random() * 255) / i)}`
+            + `${parseInt(Math.floor(Math.random() * 255) / i)}`
+            + `${parseInt(Math.floor(Math.random() * 255) / i)}`)
+    }
+    return colors
 }
 
 function shuffle(array) {
