@@ -64,16 +64,33 @@ class Force extends Component {
 
         Object.keys(currMap).forEach(
             key => {
-                
-                var divNode = document.createElement("DIV");
-                var textNode = document.createTextNode(key);
-                divNode.appendChild(textNode);
-                divNode.style = "opacity: 0.65; border-radius: 3px; padding: 6px; background-color: " + currMap[key].color
-                    + "; font-size: 1.1em; font-family: Ubunut; position: absolute; left: " + currMap[key].labelX
-                    + "px; top: " + currMap[key].labelY + "px";
-                textNode.style = "opacity: 1.0 important!;"
-                document.getElementById("root").appendChild(divNode);
-            });
+                d3.select("svg")
+                    .append("rect")
+                    .attr("x", currMap[key].labelX - 24)
+                    .attr("y", currMap[key].labelY - 31)
+                    .attr("width", "80")
+                    .attr("height", "50")
+                    .attr("rx", "20px")
+                    .attr("ry", "20px")
+                    .attr("fill", currMap[key].color)
+                    .style("opacity", "0.65")
+            }
+        )
+
+        Object.keys(currMap).forEach(
+            key => {
+                d3.select("svg")
+                    .append("text")
+                    .attr("class", "labelElement")
+                    .attr("x", currMap[key].labelX)
+                    .attr("y", currMap[key].labelY)
+                    .attr("font-family", "Monospace")
+                    .style("font-weight", "bold")
+                    .style("font-size", "1.5em")
+                    .style("fill", "#37517e")
+                    .text(key)
+            }
+        )
 
         force.start();
 
