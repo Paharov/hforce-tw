@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import { getFoci, getCurrencyMap } from './helper/foci.js';
 import { getRatesMap, calculateCircleSize } from './helper/converter.js';
-import tw_flag from './images/tw_flag.png';
 
 class Force extends Component {
     constructor(props) {
@@ -63,7 +62,7 @@ class Force extends Component {
                     .attr("rx", "20px")
                     .attr("ry", "20px")
                     .attr("fill", currMap[key].color)
-                    .style("opacity", "0.65")
+                    .style("opacity", "0.5")
             }
         )
 
@@ -81,14 +80,6 @@ class Force extends Component {
                     .text(key)
             }
         )
-
-        d3.select("svg")
-            .append("svg:image")
-            .attr('x', 670)
-            .attr('y', 240)
-            .attr('width', "15%")
-            .attr('height', "15%")
-            .attr("xlink:href", tw_flag)
 
         force.start();
 
@@ -128,7 +119,6 @@ class Force extends Component {
 
     scheduleTargetChange = (ball, n) => {
         setTimeout(function() {
-            console.log(ball, n)
             var temp = ball[n-1].__data__.id[0]
             ball[n-1].__data__.id[0] = ball[n-1].__data__.id[1]
             ball[n-1].__data__.id[1] = temp
@@ -186,14 +176,6 @@ class Force extends Component {
         }
     }
 
-    styles = {
-        logo: {
-            size: "20px",
-            marginLeft: 10,
-            marginRight: 20,
-            marginBottom: 10
-        }
-    }
 
     render() {
         return (
