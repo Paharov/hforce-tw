@@ -55,11 +55,48 @@ class Force extends Component {
 
         d3.select("svg")
             .append("svg:image")
+            .attr("id", "backgroundImage")
             .attr('x', "-13%")
             .attr('y', "-9%")
             .attr('width', "130%")
             .attr('height', "130%")
             .attr("xlink:href", backgroundPhoto)
+
+        d3.select("svg")
+            .append("rect")
+            .attr("x", d3.select("#backgroundImage").attr("cx") + 296)
+            .attr("y", d3.select("#backgroundImage").attr("cy") + 412)
+            .attr("width", "324")
+            .attr("height", "46")
+            .attr("fill", "white")
+
+        d3.select("svg")
+            .append("rect")
+            .attr("x", d3.select("#backgroundImage").attr("cx") + 950)
+            .attr("y", d3.select("#backgroundImage").attr("cy") + 412)
+            .attr("width", "324")
+            .attr("height", "46")
+            .attr("fill", "white")
+
+        d3.select("svg")
+            .append("text")
+            .attr("id", "sourceCurrencyElement")
+            .attr("x", d3.select("#backgroundImage").attr("cx") + 296 + 128)
+            .attr("y", d3.select("#backgroundImage").attr("cy") + 412 + 35)
+            .style("font-size", "2.2em")
+            .style("font-family", "Ubuntu")
+            .style("fill", "#37517e")
+            .text("HUF")
+
+        d3.select("svg")
+            .append("text")
+            .attr("id", "targetCurrencyElement")
+            .attr("x", d3.select("#backgroundImage").attr("cx") + 296 + 782)
+            .attr("y", d3.select("#backgroundImage").attr("cy") + 412 + 35)
+            .style("font-size", "2.2em")
+            .style("font-family", "Ubuntu")
+            .style("fill", "#37517e")
+            .text("USD")
 
         Object.keys(currMap).forEach(
             key => {
@@ -134,6 +171,12 @@ class Force extends Component {
             ball[n-1].__data__.id[0] = ball[n-1].__data__.id[1]
             ball[n-1].__data__.id[1] = temp
             ball[n-1].style.visibility = "visible"
+
+            d3.select("#sourceCurrencyElement")
+                .text(ball[n-1].__data__.id[0])
+
+            d3.select("#targetCurrencyElement")
+                .text(ball[n-1].__data__.id[1])
         }, this.state.interval * 5)
     }
 
