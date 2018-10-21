@@ -84,8 +84,8 @@ class Force extends Component {
 
         d3.select("svg")
             .append("svg:image")
-            .attr('x', 670)
-            .attr('y', 240)
+            .attr('x', "44%")
+            .attr('y', "42%")
             .attr('width', "15%")
             .attr('height', "15%")
             .attr("xlink:href", tw_flag)
