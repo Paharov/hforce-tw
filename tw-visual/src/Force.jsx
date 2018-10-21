@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import { getFoci, getCurrencyMap } from './helper/foci.js';
 import { getRatesMap, calculateCircleSize } from './helper/converter.js';
-import tw_flag from './images/tw_flag.png';
+import backgroundPhoto from './images/sendfromto.png';
 
 class Force extends Component {
     constructor(props) {
@@ -39,6 +39,7 @@ class Force extends Component {
             .attr("id", "mainSvg")
             .attr("width", "100%")
             .attr("height", height * 1.4)
+            .style("padding-top", "40px")
             .style("background-color", "#faf2f2");
 
         var force = d3.layout.force()
@@ -52,6 +53,14 @@ class Force extends Component {
 
         var currMap = this.state.currencyMap;
 
+        d3.select("svg")
+            .append("svg:image")
+            .attr('x', "-14%")
+            .attr('y', "-9%")
+            .attr('width', "130%")
+            .attr('height', "130%")
+            .attr("xlink:href", backgroundPhoto)
+
         Object.keys(currMap).forEach(
             key => {
                 d3.select("svg")
@@ -63,7 +72,7 @@ class Force extends Component {
                     .attr("rx", "20px")
                     .attr("ry", "20px")
                     .attr("fill", currMap[key].color)
-                    .style("opacity", "0.65")
+                    .style("opacity", "0.8")
             }
         )
 
@@ -77,18 +86,10 @@ class Force extends Component {
                     .style("font-family", "Ubuntu")
                     .style("font-weight", "bold")
                     .style("font-size", "1.1em")
-                    .style("fill", "#37517e")
+                    .style("fill", "#faf2f2")
                     .text(key)
             }
         )
-
-        d3.select("svg")
-            .append("svg:image")
-            .attr('x', "44%")
-            .attr('y', "42%")
-            .attr('width', "15%")
-            .attr('height', "15%")
-            .attr("xlink:href", tw_flag)
 
         force.start();
 
