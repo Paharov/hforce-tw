@@ -55,7 +55,7 @@ class Force extends Component {
 
         d3.select("svg")
             .append("svg:image")
-            .attr('x', "-14%")
+            .attr('x', "-13%")
             .attr('y', "-9%")
             .attr('width', "130%")
             .attr('height', "130%")
