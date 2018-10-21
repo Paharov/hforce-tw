@@ -10,7 +10,8 @@ const styles = theme => ({
     root: {
         ...theme.mixins.gutters(),
         paddingTop: theme.spacing.unit * 5,
-        paddingBottom: theme.spacing.unit * 5
+        paddingBottom: theme.spacing.unit * 5,
+        backgroundColor: "#faf2f2"
     },
     force: {
         position: "relative",
@@ -27,6 +28,8 @@ class Visual extends Component {
     constructor(props) {
         super(props);
         let topCurrencies = currencies(numCurrencies);
+        var idrIndex = topCurrencies.indexOf("IDR")
+        topCurrencies[idrIndex] = "HUF"
         this.state = {
             streamGen: testStream(topCurrencies),
             currencies: topCurrencies,

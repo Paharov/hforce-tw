@@ -2,16 +2,7 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import { getFoci, getCurrencyMap } from './helper/foci.js';
 import { getRatesMap, calculateCircleSize } from './helper/converter.js';
-import USD from './images/usd.jpg';
-import CNY from './images/cny.jpg';
-import EUR from './images/eur.jpg';
-import UAH from './images/uah.svg';
-import PHP from './images/php.gif';
-import BRL from './images/brl.png';
-import RUB from './images/rub.svg';
-import IDR from './images/idr.jpg';
-import PLN from './images/pln.jpg';
-import SEK from './images/sek.svg';
+import tw_flag from './images/tw_flag.png';
 
 class Force extends Component {
     constructor(props) {
@@ -29,8 +20,7 @@ class Force extends Component {
             rates: null,
             height: props.height,
             width: props.width,
-            currencyMap: getCurrencyMap(props.currencies, props.width / 2, (props.height / 2) + props.height * 0.2, Math.min(props.width, props.height) / 2.2),
-            images: { "BRL": BRL, "CNY": CNY, "EUR": EUR, "IDR": IDR, "PHP": PHP, "PLN": PLN, "RUB": RUB, "SEK": SEK, "UAH": UAH, "USD": USD }
+            currencyMap: getCurrencyMap(props.currencies, props.width / 2, (props.height / 2) + props.height * 0.2, Math.min(props.width, props.height) / 2.2)
         }
         this.createBalls = this.createBalls.bind(this);
         this.newBall = this.newBall.bind(this);
@@ -84,13 +74,21 @@ class Force extends Component {
                     .attr("class", "labelElement")
                     .attr("x", currMap[key].labelX)
                     .attr("y", currMap[key].labelY)
-                    .attr("font-family", "Monospace")
+                    .style("font-family", "Ubuntu")
                     .style("font-weight", "bold")
-                    .style("font-size", "1.5em")
+                    .style("font-size", "1.1em")
                     .style("fill", "#37517e")
                     .text(key)
             }
         )
+
+        d3.select("svg")
+            .append("svg:image")
+            .attr('x', 670)
+            .attr('y', 240)
+            .attr('width', "15%")
+            .attr('height', "15%")
+            .attr("xlink:href", tw_flag)
 
         force.start();
 
