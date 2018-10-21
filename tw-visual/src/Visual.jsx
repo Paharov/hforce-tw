@@ -41,6 +41,7 @@ class Visual extends Component {
 
 
     componentDidMount() {
+        document.title = "TransferViz"
         setInterval(() => {
             this.setState({
                 current: this.state.streamGen.next().value
